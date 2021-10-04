@@ -1,4 +1,4 @@
-input =: fread 'input1'
+input =: fread 'example1'
 numbers =: 0 ". > cutopen input
 
 NB. attempt 1
@@ -21,3 +21,6 @@ NB. {.&(4$.$.@(2020=+/~)) numbers
 
 NB. attempt 2 tacit!
 part1 =: */&{.&((4$.$.@:(2020=+/~)){])
+
+NB. forks
+part1 =: ({~[:{.4$.[:$.2020=+/~)~
