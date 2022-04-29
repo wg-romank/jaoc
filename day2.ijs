@@ -1,4 +1,4 @@
-ip =. fread 'input2'
+ip =. fread 'example2'
 d2 =. cutopen ip
 
 tokenized =: > ;: &.> d2
@@ -9,7 +9,8 @@ gg =: |: > ".&.> guards
 chars =: 0 { &.> 3 {"1 tokenized
 passwords =: _1 {"1 tokenized
 
-counts =: > +/ &.> chars (=&.>) passwords
+NB. counts =: > +/ &.> chars (=&.>) passwords
+counts =: > chars +/@E.&.> passwords
 
 in_range =: (<: {:) *. (>: {.)
 
