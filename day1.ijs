@@ -24,3 +24,8 @@ part1 =: */&{.&((4$.$.@:(2020=+/~)){])
 
 NB. forks
 part1 =: */@({~[:{.4$.&$.2020=+/~)
+
+NB. some more readable
+
+take_non_zero =: 5$. $. NB. to sparse then take non zero elements
+p1 =: */ & take_non_zero & (*2020=+/~) 
