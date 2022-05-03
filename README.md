@@ -1,4 +1,4 @@
-# Advent of Code 2020
+# Advent of Code
 
 Solving advent puzzles in J (or trying to)
 

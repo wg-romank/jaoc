@@ -1,4 +1,4 @@
-input =: fread 'input1'
+input =: fread '2020/input1'
 numbers =: 0 ". > cutopen input
 
 NB. attempt 1

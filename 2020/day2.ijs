@@ -1,4 +1,4 @@
-ip =. fread 'example2'
+ip =. fread '2020/example2'
 d2 =. cutopen ip
 
 tokenized =: > ;: &.> d2
