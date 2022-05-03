@@ -1,8 +1,7 @@
-in =: cutopen fread '2021/example2'
-words =: |: ;: @> in
+in =: |: ;: @> cutopen fread '2021/example2'
 
-actions =: s: {. words
-amounts =: ".@> {: words
+actions =: s: {. in
+amounts =: ".@> {: in
 
 fw =: (s:' forward') E. actions
 bw =: (s:' backward') E. actions
