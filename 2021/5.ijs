@@ -6,7 +6,8 @@ y =: > ".&.> (2 7 {"1 in)
 mask_x =: (=/"1 y)
 mask_y =: (=/"1 x)
 
-indices =: ([: < min + [: i. 1 + >./ - min =. <./)"1
+range =: {{ x + i. 1 + y - x}}
+indices =: ([: < {. range {:)@:/:~"1
 x_indices =: indices mask_x # x
 y_indices =: indices mask_y # y
 
