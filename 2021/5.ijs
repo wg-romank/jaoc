@@ -14,7 +14,7 @@ group =: ([: { :[ [ ,. ])&.>
 grouped_x =: x_indices group  {."1 mask_x # y
 grouped_y =: y_indices group~ {."1 mask_y # x
 
-vvv =: {{ 1 (> y) } 10 10 $ 0 }}
+vvv =: {{ 1 (> y) } 1000 1000 $ 0 }}
 
 p1 =: +/ vvv@> grouped_x , grouped_y
 
