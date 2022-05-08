@@ -1,0 +1,1 @@
+in =: "."0 > cutopen fread '2021/example11'
