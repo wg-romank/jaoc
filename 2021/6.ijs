@@ -9,14 +9,17 @@ step =: monad define
 
   NB. right side of a fork
   zeroed =. 0 { y
-  modify =. (,~ zeroed) (6 8}) 9 $ 0
+  modify =. (2#zeroed) (6 8}) 9 $ 0
 
   shifted + modify
 )
 
-NB. can also be
-NB. for performance!
-step_tacit =: (1 |.!.0 ]) + ((9$0) (6 8})~ (0&{ , 0&{))
-
 p1 =: +/ step^:80 counts
 p2 =: +/ step^:256 counts
+
+NB. can also be
+NB. for performance?
+shift =: 1 |.!.0 ]
+count_0s =: (9$0) (6 8})~ (0&{ , 0&{)
+step_tacit =: shift + count_0s
+run =: +/@:(step_tacit^:[)
