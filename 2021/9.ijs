@@ -1,19 +1,21 @@
 
 in =: "."0 > cutopen fread '2021/example9'
 
-shifts =: }. 6 2 $ (, > ([,-)&.> 0 0;0 1;1 0)
-s =: {{ shifts|.!.x("1 _) y }}
+neighboors =: }. 6 2 $ (, > ([,-)&.> 0 0;0 1;1 0)
+shift =: {{ neighboors|.!.x("1 _) y }}
 
-low =: =~ [: <./"2 (1 0 2) |: _&s
+low =: = [: <./"2 (1 0 2) |: _&shift
 
-p1 =: [: +/ 1+ (I.@:,@:low ]) { [:,]
+p1 =: [: +/ 1+ ([: I.@:, low) { ,
 
-mask =: -.@:(9=]) 
-shp =: [: $ ] 
-basins =: ] * (shp $ (+/\)@:,)
-grow = {{ x * >."0/ 0&s y }}
+NB. shp =: [: $ ] -> $
+basins =: * ($ $ ([: +/\ ,))
+grow =: * ([: >."0/ 0&shift)
+mask =: [: -. 9=]
+layout =: mask grow^:_ basins@:low
 
-NB. can also write this tacit madness
-NB. grow =: [ * ([: (>."0/)@:(0&s) ])
+size =: [: \:~ (#/.~)@:,
+NB. or
+NB. size =: {{ \:~ #/.~ , y }}
 
-p2 =: */ 3 {. \:~ #/.~ , (mask grow^:_ basins@:low) in
+p2 =: [: */ 3 {. size@:layout
