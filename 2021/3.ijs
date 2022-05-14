@@ -11,16 +11,20 @@ NB. since we are looking up '1'
 NB. we want to set corresponding index to 1
 p1 =: (#. most_common) * (#. least_common)
 
-NB. todo bug
-p2_scrubber =: dyad define
-  half =: 2 %~ # y 
-  counts =: +/ y
-  least =: x {"1 counts < half
-  mask =: x {"1 (least E."0 y)
-  if. (# y) > 1 do. (>: x) p2_scrubber (mask # y) else. y end.
+scrub =: dyad define
+  half =. 2 %~ # y 
+  counts =. +/ y
+  least =. x {"1 counts < half
+  mask =. x {"1 (least E."0 y)
+  if. (# mask # y) > 1 do. (>: x) scrub (mask # y) else. mask # y end.
 )
 
-prefixes_mc =: ]\ most_common
-p2_ox_gen =: +/ in_nums * +/ prefixes_mc E."1 (|: in_nums)
+ox =: dyad define
+  half =. 2 %~ # y 
+  counts =. +/ y
+  least =. x {"1 counts >: half
+  mask =. x {"1 (least E."0 y)
+  if. (# mask # y) > 1 do. (>: x) ox (mask # y) else. mask # y end.
+)
 
-p2 =: (#. (0 p2_scrubber in_nums)) * (#. p2_ox_gen)
+p2 =: (#. (0 scrub in_nums)) * (#. (0 ox in_nums))
