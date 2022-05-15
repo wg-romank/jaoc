@@ -4,9 +4,10 @@ counts =: 2 * +/
 p1 =: [: */@:#. [: (-.,:]) (counts > #)
 
 sift =: adverb define
-  filter =. x {"1 (counts u #) y
-  mask =. x {"1 (filter E."0 y)
-  (>: x) (u sift)^:(1 < [: #]) (mask # y)
+  filter =. { (counts u #)
+  mask =. [ {"1 (filter = ])
+  next_iter =. (u sift)^:(1 < [: #])
+  (>: x) next_iter ((x mask y) # y)
 )
 
 p2 =: 0&(([: #. <sift) * ([: #. >:sift))
