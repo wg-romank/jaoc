@@ -4,11 +4,12 @@ counts =: 2 * +/
 mul =: */@:#.
 p1 =: [: mul [: (-.,:]) (counts > #)
 
-sift =: adverb define
-  filter =. (counts u #) = ] NB. dyad
-  mask =. [: filter {"1      NB. dyad
-  next_iter =. (u sift)^:(1 < [: #])
-  (>: x) next_iter (x (mask # ]) y)
-)
+counts =: 2 * +/
+fltr =: {{ (counts u #) = ] }}
+mask =: {{ [: (u fltr) {"1 }}
+sift =: {{ ([: >: [) $:^:(1 < [: #]) ((u mask) # ]) }}
 
-p2 =: [: mul 0&(<sift ,: >:sift)
+p2_scrub =: <sift
+p2_ox =: >:sift
+
+p2 =: [: mul 0 (p2_ox ,: p2_scrub) ]
