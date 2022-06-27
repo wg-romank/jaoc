@@ -7,8 +7,12 @@ p1 =: [: mul [: (-.,:]) (counts > #)
 counts =: 2 * +/
 fltr =: {{ (counts u #) = ] }}
 mask =: {{ [: (u fltr) {"1 }}
-sift =: {{ ([: >: [) $:^:(1 < [: #]) ((u mask) # ]) }}
+incrl =: [: >: [ NB. increment left operand in dyadic phrase
+one_or =: 1 < [: # ] NB. return true if right input size is more than one
+sift =: {{ incrl $:^:one_or ((u mask) # ]) }}
 
+NB. has to be bound to a name, otherwise
+NB. $: will capture wrong scope to recurse
 p2_scrub =: <sift
 p2_ox =: >:sift
 
