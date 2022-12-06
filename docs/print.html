@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Advent of Code in J</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Advent of Code in J</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="intro"><a class="header" href="#intro">Intro</a></h1>
+<p>J is an array programming laguage of APL family [1]. I discovered it through a talk from StrangeLoop [2].
+Being fan of learning programming laguages in general it immediately struck me as something totally different, something I have not seen before.</p>
+<p>While this project is not a new effort and it has sophisticated documentation, I and many other people find it sometimes hard to approach.
+In this book I will break down solutoins for Advent of Code [3] puzzles in J and explain some common primitives and their semantics.</p>
+<p>This book is by no means a sophisticated guide to a langauge but hopefully it is useful enough to get more people started and make language more approachable.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="basics"><a class="header" href="#basics">Basics</a></h1>
+<p>Unlike many common languages J is evaluated right to left with no operator precedance.
+This is a common warning for newcommer, <code>*</code> does not have priority over <code>+</code> in J.</p>
+<p>Expression <code>5 * 3 + 1</code> evaluates to 20, not 16.</p>
+<p>Functions take at most two arguments and they are passed in infix form.
+There are reserved names <code>x</code> and <code>y</code> for function's left and right argument respectively.</p>
+<pre><code class="language-j">   plus =: {{ x + y }}
+
+   3 plus 5
+8
+</code></pre>
+<p>Here we can define a function <code>plus</code> and call it.
+J is a dynamically typed language, so there are no separate type definitions. Type will be inferred.</p>
+<p>J is an array programming language, which means its primitives work on arrays.
+To define an array J simply uses <code> </code> space as a separator and no additional syntax constructs.</p>
+<pre><code>   3 plus 0 2 3 4
+3 5 6 7
+</code></pre>
+<p>Here we call our <code>plus</code> function again with its right argument array and this would evaluate to another array.
+There is not need to additional looping / calling collection functions, <code>+</code> that we use in our <code>plus</code> definition is <em>rank-polymorphic</em>.
+Like many other primitives provided.</p>
+<p>There are quite a few primitives baked into the language that are defined as special characters, normally used for other purposes.
+For example a curly brace <code>{</code> can be used to fetch elements from the array by their index.</p>
+<pre><code>   1 { 3 5 6 7
+5
+</code></pre>
+<p>Many more primitives can be found at the language wiki vocabulary [1]. This can be overwhelming so we will explain their usage 1-by-1 as we solve puzzles from AoC.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="day-6-tuning-trouble"><a class="header" href="#day-6-tuning-trouble">Day 6: Tuning Trouble</a></h1>
+<p>In this book we won't be going in order of puzzles suggested by AoC, rather in order of increasing complexity (in terms of number of primitives used to solve the task).</p>
+<p>Here we start with <a href="https://adventofcode.com/2022/day/6">day 6</a>, where we are given a string and we need to find first occurence of unique 4 characters and return its index.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Our approach to this problem on a high level will be following: we want to split our input into windows of 4 characters, those windows will be sliding, e.g. characters would overlap, since we want to find a first occurence. Then we want to check wheter characters in the input are unique and if so we would flag them with some marker. Finally we want to find first occurence of that marker in transformed input - this will be our answer.</p>
+<p>To get started we can take our input and save it in some file <code>2020/input6</code> which we then can read with J-builtin <code>fread</code>. I will be using one of example inputs to illustrate how J operations work.</p>
+<pre><code>   in =: fread '2022/input6'
+   in
+bvwbjplbgvbhsrlpgdmjqwftvncz
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="scan--sliding-windows"><a class="header" href="#scan--sliding-windows">Scan &amp; Sliding Windows</a></h1>
+<p>Now in order to scan the input string there's a scan operator <code>\</code>, but we cannot just <code>\ in</code> since scan operator is a function that is expecting another function (HOF).
+For those familiar with functional programming there's an identity function in J which is defined as <code>]</code>. For those who don't - identity is just a funciton that passes its arguments through without any modification.</p>
+<p>Actually there are two, <code>[</code> is also an identity. For our use-case it wouldn't matter which one of those to use, but I will cover differences later.</p>
+<p>So if we try calling our newly composed scan function on our input we would see something like following.</p>
+<pre><code class="language-j">   ]\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
+b
+bv
+bvw
+bvwb
+...
+</code></pre>
+<p>As we see this produces prefixes of our input in consequtive manner, this is not quite what we need.
+However this function we created <code>]\</code> can take an extra argument on the left. This argument defines length of the window in output.</p>
+<pre><code class="language-j">   4 ]\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
+bvwb
+vwbj
+wbjp
+...
+</code></pre>
+<p>That's it! We've got our sliding windows. </p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unique-characters"><a class="header" href="#unique-characters">Unique characters</a></h1>
+<p>Now we need to somehow check if characters are unique in the window, to do so we can use nub <code>~.</code>.
+This primitive takes input and produces set of its unique members.</p>
+<pre><code class="language-j">   ~. 'bvwb'
+bvw
+</code></pre>
+<p>So if we call it on a string that is in the first window, then we can see that its output has last <code>b</code> removed.
+This is handy but this would not quite cut it for us just yet, we need to compare output of nub <code>~.</code> with its original argument.</p>
+<p>J has a regular comparison operator <code>=</code> but this operator will compare strings symbol by symbol and will return another array as an output, so we can't quite use it here.
+Trying to compare strings of unmatching length will produce a length error.</p>
+<pre><code class="language-j">   'bvwb' = 'bvw'
+|length error
+|   'bvwb'    ='bvw'
+</code></pre>
+<p>Fortunately there is another comparison operator that is called match <code>-:</code> and it is used mainly for 'tolerant' comparison as described in docs.
+Match would return us a single value, <code>1</code> in case of match and <code>0</code> otherwise and this is exactly the type of flag that we need.</p>
+<pre><code>   'bvwb' -: 'bvw'
+0
+</code></pre>
+<p>Let's define our function that will check uniquness as <code>is_unique</code></p>
+<pre><code>   is_unique =: {{ y -: ~. y }}
+</code></pre>
+<p>Now that might look uncomfortable at first, there is a but of unpacking that can be done here.</p>
+<p><code>y</code> is referring to functions right argument so we can mentally substitute it wiht original string <code>bvwb</code>.
+If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is doneall is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
+<p>If we try calling our new function on few inputs we can see that it is working as expected.</p>
+<pre><code class="language-j">   is_unique 'bvwb'
+0
+   is_unique 'abcd'
+1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h1>
+<p>We have defined a function that tests if string consists of unique set of characters and we also covered how to scan our input in fixed size windows. Previously we used identity <code>]</code> to compose our scan operator <code>]\</code>, but we can actually just substitue our identity for <code>is_unique</code> to array of flag markers as an output.</p>
+<pre><code>   4 is_unique\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
+0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+</code></pre>
+<p>This returns us array of flags, and all that is left is to find a first occurence of <code>1</code> in this array. To do this we can use index of <code>i.</code>, which returns first occurence of an element in array.
+<code>i.</code> is a counter-intuitive, since it takes array to search in on the left and elements to look for on the right so we need an extra pair of braces to make sure ordering (remember J evaluates right-to-left)</p>
+<pre><code class="language-j">   (4 is_unique\ 'bvwbjplbgvbhsrlpgdmjqwftvncz') i. 1
+1
+</code></pre>
+<p>With this we have everything to put together solution for the first part of the problem, right? Well, not quite. As we use sliding windows, indexes we output are of those windows. So instead of getting <code>5</code> for first example input in description we would get <code>1</code> and we need to add window length to it.</p>
+<p>Fortunately as J evaluates right-to-left we can just add <code>4 +</code> to our function body to get correct result.</p>
+<pre><code>   solve_part1 =: {{ 4 + (4 is_unique\ y) i. 1 }}
+</code></pre>
+<p>As we can see, we have some duplication here, we can actually extract <code>4</code> as another function argument (it would be left argument with reserved name <code>x</code>).</p>
+<pre><code>   solve =: {{ x + (x is_unique\ y i.1 }}
+</code></pre>
+<p>Here is a complete solution.</p>
+<pre><code>   in =: fread '2022/input6'
+   is_unique =: {{ y -: ~. y }}
+   solve =: {{ x + (x is_unique\ y i.1 }}
+   part1 =: 4 solve in
+   part2 =: 14 solve in
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>

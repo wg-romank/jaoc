@@ -1,0 +1,6 @@
+[book]
+authors = ["Roman Kotelnikov"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Advent of Code in J"
