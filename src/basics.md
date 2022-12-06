@@ -38,4 +38,4 @@ For example a curly brace `{` can be used to fetch elements from the array by th
 5
 ```
 
-Many more primitives can be found at the language wiki vocabulary [1]. This can be overwhelming so we will explain their usage 1-by-1 as we solve puzzles from AoC.
+Many more primitives can be found at the language wiki vocabulary [1](https://code.jsoftware.com/wiki/Vocabulary). This can be overwhelming so we will explain their usage 1-by-1 as we solve puzzles from AoC.
