@@ -28,7 +28,7 @@ Match would return us a single value, `1` in case of match and `0` otherwise and
 0
 ```
 
-Let's define our function that will check uniquness as `is_unique`
+Let's define our function that will check uniqueness as `is_unique`
 
 
 ```
@@ -37,8 +37,8 @@ Let's define our function that will check uniquness as `is_unique`
 
 Now that might look uncomfortable at first, there is a but of unpacking that can be done here.
 
-`y` is referring to functions right argument so we can mentally substitute it wiht original string `bvwb`.
-If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is `~. y`, meaning finding unique subset of our string. Once that is doneall is left 'tolerant' comparison with match `-:` that would return us `1` or `0`.
+`y` is referring to functions right argument so we can mentally substitute it with original string `bvwb`.
+If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is `~. y`, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match `-:` that would return us `1` or `0`.
 
 If we try calling our new function on few inputs we can see that it is working as expected.
 

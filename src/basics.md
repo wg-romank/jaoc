@@ -1,7 +1,7 @@
 # Basics
 
-Unlike many common languages J is evaluated right to left with no operator precedance.
-This is a common warning for newcommer, `*` does not have priority over `+` in J.
+Unlike many common languages J is evaluated right to left with no operator precedence.
+This is a common warning for newcomer, `*` does not have priority over `+` in J.
 
 Expression `5 * 3 + 1` evaluates to 20, not 16.
 
