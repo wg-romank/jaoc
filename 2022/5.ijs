@@ -3,19 +3,29 @@ vv =: _4 ({.@:}.)\ ]
 cr =: |: <"0 vv @> 3 {. in
 
 b =: <' '
-shifts =: +/"1 b -:"0 cr
+find_shift =: [: +/"1 b -:"0 ]
 
-shifted =: shifts |."(0 1) cr
-len =: # shifted
+shift =: find_shift |."(0 1) ]
 
 next =: 0 { iq
-'hm fr to' =: next
-NB. probably can be done with antibase cheaper
-mask =: hm * fr = i.len
+NB. hm =: {.
+NB. fr =: {.@:}.
+NB. to =: }.@:}.
+NB. mask =: (hm * i.len = fr) next
 
-tm =: mask |.!.b"(0 1) shifted
-mv =: hm {. fr { shifted
-iter =: (to {. tm) , (len {. mv , to { tm) , ((to + 1) }. tm)
+process =: dyad define 
+  NB. probably can be done with antibase cheaper
+  len =: # x
+  'hm fr to' =: y
+  mask =: hm * fr = i.len
+  move =: hm {. fr { x
+  prefix =: to {. ]
+  updated =: move , to { ]
+  suffix =: (to + 1) }. ]
+
+  left =: mask |.!.b"(0 1) x
+  (prefix , updated , suffix) left
+)
 
 pr =: {{ ". > 1 3 5 { ;: y }}
 iq =: 0 1 1 -"1~ pr @> 4 }. in
