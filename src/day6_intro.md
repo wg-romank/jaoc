@@ -4,9 +4,9 @@ Our approach to this problem on a high level will be following: we want to split
 
 To get started we can take our input and save it in some file `2020/input6` which we then can read with J-builtin `fread`. I will be using one of example inputs to illustrate how J operations work.
 
-```
-   in =: fread '2022/input6'
-   in
+```r
+   input =: fread '2022/input6'
+   input
 bvwbjplbgvbhsrlpgdmjqwftvncz
 ```
 

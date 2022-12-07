@@ -3,7 +3,7 @@
 Now we need to somehow check if characters are unique in the window, to do so we can use nub `~.`.
 This primitive takes input and produces set of its unique members.
 
-```j
+```r
    ~. 'bvwb'
 bvw
 ```
@@ -14,7 +14,7 @@ This is handy but this would not quite cut it for us just yet, we need to compar
 J has a regular comparison operator `=` but this operator will compare strings symbol by symbol and will return another array as an output, so we can't quite use it here.
 Trying to compare strings of unmatching length will produce a length error.
 
-```j
+```r
    'bvwb' = 'bvw'
 |length error
 |   'bvwb'    ='bvw'
@@ -23,7 +23,7 @@ Trying to compare strings of unmatching length will produce a length error.
 Fortunately there is another comparison operator that is called match `-:` and it is used mainly for 'tolerant' comparison as described in docs.
 Match would return us a single value, `1` in case of match and `0` otherwise and this is exactly the type of flag that we need.
 
-```
+```r
    'bvwb' -: 'bvw'
 0
 ```
@@ -31,7 +31,7 @@ Match would return us a single value, `1` in case of match and `0` otherwise and
 Let's define our function that will check uniqueness as `is_unique`
 
 
-```
+```r
    is_unique =: {{ y -: ~. y }}
 ```
 
@@ -42,7 +42,7 @@ If we recall previous chapter we know that J is evaluating right to left so insi
 
 If we try calling our new function on few inputs we can see that it is working as expected.
 
-```j
+```r
    is_unique 'bvwb'
 0
    is_unique 'abcd'

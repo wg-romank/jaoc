@@ -8,7 +8,7 @@ Expression `5 * 3 + 1` evaluates to 20, not 16.
 Functions take at most two arguments and they are passed in infix form.
 There are reserved names `x` and `y` for function's left and right argument respectively.
 
-```j
+```r
    plus =: {{ x + y }}
 
    3 plus 5
@@ -21,7 +21,7 @@ J is a dynamically typed language, so there are no separate type definitions. Ty
 J is an array programming language, which means its primitives work on arrays.
 To define an array J simply uses ` ` space as a separator and no additional syntax constructs.
 
-```
+```r
    3 plus 0 2 3 4
 3 5 6 7
 ```
@@ -33,7 +33,7 @@ Like many other primitives provided.
 There are quite a few primitives baked into the language that are defined as special characters, normally used for other purposes.
 For example a curly brace `{` can be used to fetch elements from the array by their index.
 
-```
+```r
    1 { 3 5 6 7
 5
 ```
