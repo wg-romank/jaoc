@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Basics - Advent of Code in J</title>
+        <title>Tacit Programming - Advent of Code in J</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html" class="active"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html"><strong aria-hidden="true">4.2.</strong> Left & right identity</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html" class="active"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html"><strong aria-hidden="true">4.2.</strong> Left & right identity</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,43 +145,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="basics"><a class="header" href="#basics">Basics</a></h1>
-<p>Unlike many common languages J is evaluated right to left with no operator precedence.
-This is a common warning for newcomer, <code>*</code> does not have priority over <code>+</code> in J.</p>
-<p>Expression <code>5 * 3 + 1</code> evaluates to 20, not 16.</p>
-<p>Functions take at most two arguments and they are passed in infix form.
-There are reserved names <code>x</code> and <code>y</code> for function's left and right argument respectively.</p>
+                        <h1 id="tacit-programming"><a class="header" href="#tacit-programming">Tacit Programming</a></h1>
+<p>One of distinct features of J is its brevity and to facilitate it <em>tacit</em> or <em>point-free</em> programming is often used <a href="https://en.wikipedia.org/wiki/Tacit_programming">1</a>. In short it is a style of programming where arguments are omitted. In J this is particularly easy to achieve since each function takes up to two argument, so it is easy to imagine them on both sides.</p>
+<p>If we go back to our <code>plus</code> example, previously we defined it via what is called <em>direct definition</em> (using <code>{{ }}</code>) and referred to our arguments as <code>x</code> and <code>y</code> for left and right argument respectively.</p>
 <pre><code class="language-r">   plus =: {{ x + y }}
-
-   3 plus 5
-8
 </code></pre>
-<p>Here we can define a function <code>plus</code> and call it.
-J is a dynamically typed language, so there are no separate type definitions. Type will be inferred.</p>
-<p>J is an array programming language, which means its primitives work on arrays.
-To define an array J simply uses <code> </code> space as a separator and no additional syntax constructs.</p>
-<pre><code class="language-r">   3 plus 0 2 3 4
-3 5 6 7
+<p>However this can be reduced to tacit form, leveraging the fact that <code>x</code> is always coming from the left and <code>y</code> - from the right.</p>
+<pre><code class="language-r">   plus =: +
 </code></pre>
-<p>Here we call our <code>plus</code> function again with its right argument array and this would evaluate to another array.
-There is not need to additional looping / calling collection functions, <code>+</code> that we use in our <code>plus</code> definition is <em>rank-polymorphic</em>.
-Like many other primitives provided.</p>
-<p>There are quite a few primitives baked into the language that are defined as special characters, normally used for other purposes.
-For example a curly brace <code>{</code> can be used to fetch elements from the array by their index.</p>
-<pre><code class="language-r">   1 { 3 5 6 7
-5
+<p>This definition now becomes trivial so our <code>plus</code> function is just a plus <code>+</code> primitive which we can inline.</p>
+<p>Being able to do this for a single primitive is not very useful on its own, so let's look at the definition of a function that is finding average of an array.</p>
+<pre><code class="language-r">   mean =: {{ (+/ y) % (# y) }}
 </code></pre>
-<p>Many more primitives can be found at the language wiki vocabulary <a href="https://code.jsoftware.com/wiki/Vocabulary">1</a>. This can be overwhelming so we will explain their usage 1-by-1 as we solve puzzles from AoC.</p>
+<p>We have some new primitives here, let's go over them one-by-one.</p>
+<ul>
+<li><code>/</code> is another function that is taking a function on its left, similar to <code>\</code>, this primitive is called reduce or fold, when called on <code>y</code> it will compute sum of <code>y</code>s elements.</li>
+<li><code>#</code> is just a simple function that is computing length of <code>y</code>, it is called tally.</li>
+<li><code>%</code> is division sign, since both slashes forward and backward are already used for other purposes, J reserves <code>%</code> for division.</li>
+</ul>
+<p>Given this, if we read the original mean definition we should be able to interpret it as something like <em>compute sum of the argument and then divide it by its length</em>, the very definition of average.</p>
+<p>However in J you can write this in its tacit form, omitting the argument to get <code>+/ % #</code>, let's breakdown how it works.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="day6_part1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="day6.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="tacit_fork.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -191,11 +184,11 @@ For example a curly brace <code>{</code> can be used to fetch elements from the 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="day6_part1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="day6.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="tacit_fork.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

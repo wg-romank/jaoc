@@ -7,3 +7,6 @@
   - [Scan & Sliding Windows](./day6_scan.md)
   - [Unique characters](./day6_unique.md)
   - [Putting it all together](./day6_part1.md)
+- [Tacit Programming](./tacit.md)
+  - [Fork](./tacit_fork.md)
+  - [Left & right identity](./tacit_left_right.md)

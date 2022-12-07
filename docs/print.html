@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html"><strong aria-hidden="true">4.2.</strong> Left & right identity</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -264,6 +264,52 @@ Match would return us a single value, <code>1</code> in case of match and <code>
    part1 =: 4 solve input
    part2 =: 14 solve input
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tacit-programming"><a class="header" href="#tacit-programming">Tacit Programming</a></h1>
+<p>One of distinct features of J is its brevity and to facilitate it <em>tacit</em> or <em>point-free</em> programming is often used <a href="https://en.wikipedia.org/wiki/Tacit_programming">1</a>. In short it is a style of programming where arguments are omitted. In J this is particularly easy to achieve since each function takes up to two argument, so it is easy to imagine them on both sides.</p>
+<p>If we go back to our <code>plus</code> example, previously we defined it via what is called <em>direct definition</em> (using <code>{{ }}</code>) and referred to our arguments as <code>x</code> and <code>y</code> for left and right argument respectively.</p>
+<pre><code class="language-r">   plus =: {{ x + y }}
+</code></pre>
+<p>However this can be reduced to tacit form, leveraging the fact that <code>x</code> is always coming from the left and <code>y</code> - from the right.</p>
+<pre><code class="language-r">   plus =: +
+</code></pre>
+<p>This definition now becomes trivial so our <code>plus</code> function is just a plus <code>+</code> primitive which we can inline.</p>
+<p>Being able to do this for a single primitive is not very useful on its own, so let's look at the definition of a function that is finding average of an array.</p>
+<pre><code class="language-r">   mean =: {{ (+/ y) % (# y) }}
+</code></pre>
+<p>We have some new primitives here, let's go over them one-by-one.</p>
+<ul>
+<li><code>/</code> is another function that is taking a function on its left, similar to <code>\</code>, this primitive is called reduce or fold, when called on <code>y</code> it will compute sum of <code>y</code>s elements.</li>
+<li><code>#</code> is just a simple function that is computing length of <code>y</code>, it is called tally.</li>
+<li><code>%</code> is division sign, since both slashes forward and backward are already used for other purposes, J reserves <code>%</code> for division.</li>
+</ul>
+<p>Given this, if we read the original mean definition we should be able to interpret it as something like <em>compute sum of the argument and then divide it by its length</em>, the very definition of average.</p>
+<p>However in J you can write this in its tacit form, omitting the argument to get <code>+/ % #</code>, let's breakdown how it works.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fork"><a class="header" href="#fork">Fork</a></h1>
+<p>Tacit definition of mean <code>+/ % #</code> is combinator called <em>fork</em>. Combinator is simply a function that is taking another function and producing yet another one. In our previous example, both scan <code>\</code> and reduce <code>/</code> are such combinator functions. Unlike scan and reduce, <em>fork</em> does not have any special symbol assigned to it, instead whenever J interpreter sees 3 functions side-by-side, it will evaluate it in special order.</p>
+<pre><code class="language-r">   (f h g) input
+</code></pre>
+<p>Is equivalent to:</p>
+<pre><code class="language-r">   (f input) h (g input)
+</code></pre>
+<p>This is exactly what mean is doing, in its case <code>f</code> is <code>+/</code> and <code>g</code> is <code>#</code>. It computes both sum of elements and length of the array and then divides result of first by result of second producing mean value.</p>
+<p>Let's break down evaluation order below.</p>
+<pre><code class="language-r">   (+/ % #) 1 2 3
+</code></pre>
+<p>Here we apply <em>tacit</em> definition of mean to array <code>1 2 3</code>. Again J does not have any special syntax to define array literal, it is constructed just by stacking numbers next to one another. Having braces around tacit form of mean is important, without braces J will interpret it as consecutive application of primitives on our array, first tally <code>#</code> then division <code>%</code> (which when called with one argument will return reciprocal or <code>1 % y</code>) and finally computing sum on the result (which is single item so it just returns result back).</p>
+<p>Applying fork evaluation rules we get.</p>
+<pre><code class="language-r">   (+/ 1 2 3) % (# 1 2 3)
+</code></pre>
+<p>Which evaluates to.</p>
+<pre><code class="language-r">   6 % 3
+</code></pre>
+<p>Giving us final result of <code>2</code>.</p>
+<p>Like any other function this tacit form can be given a name and used with that name.</p>
+<pre><code class="language-r">   mean =: +/ % #
+   mean 1 2 3
+6
+</code></pre>
+<p>When it is assigned to a name, outer braces are not necessary anymore.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="left--right-identity"><a class="header" href="#left--right-identity">Left &amp; right identity</a></h1>
 
                     </main>
 
