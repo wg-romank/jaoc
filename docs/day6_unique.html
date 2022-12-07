@@ -116,6 +116,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/wg-romank/jaoc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -161,12 +164,12 @@ Match would return us a single value, <code>1</code> in case of match and <code>
 <pre><code>   'bvwb' -: 'bvw'
 0
 </code></pre>
-<p>Let's define our function that will check uniquness as <code>is_unique</code></p>
+<p>Let's define our function that will check uniqueness as <code>is_unique</code></p>
 <pre><code>   is_unique =: {{ y -: ~. y }}
 </code></pre>
 <p>Now that might look uncomfortable at first, there is a but of unpacking that can be done here.</p>
-<p><code>y</code> is referring to functions right argument so we can mentally substitute it wiht original string <code>bvwb</code>.
-If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is doneall is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
+<p><code>y</code> is referring to functions right argument so we can mentally substitute it with original string <code>bvwb</code>.
+If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
 <p>If we try calling our new function on few inputs we can see that it is working as expected.</p>
 <pre><code class="language-j">   is_unique 'bvwb'
 0

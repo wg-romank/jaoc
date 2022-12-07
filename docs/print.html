@@ -117,6 +117,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/wg-romank/jaoc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -144,14 +147,14 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="intro"><a class="header" href="#intro">Intro</a></h1>
-<p>J is an array programming laguage of APL family <a href="https://en.wikipedia.org/wiki/APL_(programming_language)">1</a>. I discovered it through a talk from StrangeLoop <a href="https://www.youtube.com/watch?v=RWYkx6-L04Q">2</a>.
-Being fan of learning programming laguages in general it immediately struck me as something totally different, something I have not seen before.</p>
+<p>J is an array programming language of APL family <a href="https://en.wikipedia.org/wiki/APL_(programming_language)">1</a>. I discovered it through a talk from StrangeLoop <a href="https://www.youtube.com/watch?v=RWYkx6-L04Q">2</a>.
+Being fan of learning programming languages in general it immediately struck me as something totally different, something I have not seen before.</p>
 <p>While this project is not a new effort and it has sophisticated documentation, I and many other people find it sometimes hard to approach.
-In this book I will break down solutoins for Advent of Code <a href="adventofcode.com/">3</a> puzzles in J and explain some common primitives and their semantics.</p>
-<p>This book is by no means a sophisticated guide to a langauge but hopefully it is useful enough to get more people started and make language more approachable.</p>
+In this book I will break down solutions for Advent of Code <a href="adventofcode.com/">3</a> puzzles in J and explain some common primitives and their semantics.</p>
+<p>This book is by no means a sophisticated guide to a language but hopefully it is useful enough to get more people started and make language more approachable.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="basics"><a class="header" href="#basics">Basics</a></h1>
-<p>Unlike many common languages J is evaluated right to left with no operator precedance.
-This is a common warning for newcommer, <code>*</code> does not have priority over <code>+</code> in J.</p>
+<p>Unlike many common languages J is evaluated right to left with no operator precedence.
+This is a common warning for newcomer, <code>*</code> does not have priority over <code>+</code> in J.</p>
 <p>Expression <code>5 * 3 + 1</code> evaluates to 20, not 16.</p>
 <p>Functions take at most two arguments and they are passed in infix form.
 There are reserved names <code>x</code> and <code>y</code> for function's left and right argument respectively.</p>
@@ -178,18 +181,18 @@ For example a curly brace <code>{</code> can be used to fetch elements from the 
 <p>Many more primitives can be found at the language wiki vocabulary <a href="https://code.jsoftware.com/wiki/Vocabulary">1</a>. This can be overwhelming so we will explain their usage 1-by-1 as we solve puzzles from AoC.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="day-6-tuning-trouble"><a class="header" href="#day-6-tuning-trouble">Day 6: Tuning Trouble</a></h1>
 <p>In this book we won't be going in order of puzzles suggested by AoC, rather in order of increasing complexity (in terms of number of primitives used to solve the task).</p>
-<p>Here we start with <a href="https://adventofcode.com/2022/day/6">day 6</a>, where we are given a string and we need to find first occurence of unique 4 characters and return its index.</p>
+<p>Here we start with <a href="https://adventofcode.com/2022/day/6">day 6</a>, where we are given a string and we need to find first occurrence of unique 4 characters and return its index.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>Our approach to this problem on a high level will be following: we want to split our input into windows of 4 characters, those windows will be sliding, e.g. characters would overlap, since we want to find a first occurence. Then we want to check wheter characters in the input are unique and if so we would flag them with some marker. Finally we want to find first occurence of that marker in transformed input - this will be our answer.</p>
+<p>Our approach to this problem on a high level will be following: we want to split our input into windows of 4 characters, those windows will be sliding, characters would overlap, since we want to find a first occurrence. Then we want to check whether characters in the input are unique and if so we would flag them with some marker. Finally we want to find first occurrence of that marker in transformed input - this will be our answer.</p>
 <p>To get started we can take our input and save it in some file <code>2020/input6</code> which we then can read with J-builtin <code>fread</code>. I will be using one of example inputs to illustrate how J operations work.</p>
 <pre><code>   in =: fread '2022/input6'
    in
 bvwbjplbgvbhsrlpgdmjqwftvncz
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="scan--sliding-windows"><a class="header" href="#scan--sliding-windows">Scan &amp; Sliding Windows</a></h1>
-<p>Now in order to scan the input string there's a scan operator <code>\</code>, but we cannot just <code>\ in</code> since scan operator is a function that is expecting another function (HOF).
-For those familiar with functional programming there's an identity function in J which is defined as <code>]</code>. For those who don't - identity is just a funciton that passes its arguments through without any modification.</p>
-<p>Actually there are two, <code>[</code> is also an identity. For our use-case it wouldn't matter which one of those to use, but I will cover differences later.</p>
+<p>Now in order to scan the input string there's a scan operator <code>\</code>, but we cannot just <code>\ in</code> since scan operator is a function that is expecting another function (HOF). So we need to pass it some other function first. It takes its argument on the left.</p>
+<p>For those familiar with functional programming there's an identity function in J which is defined as <code>]</code>. Actually there are two, <code>[</code> is also an identity. For our use-case it wouldn't matter which one of those to use, but I will cover differences later.</p>
+<p>For those who don't - identity is just a function that passes its arguments through without any modification.</p>
 <p>So if we try calling our newly composed scan function on our input we would see something like following.</p>
 <pre><code class="language-j">   ]\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
 b
@@ -198,7 +201,7 @@ bvw
 bvwb
 ...
 </code></pre>
-<p>As we see this produces prefixes of our input in consequtive manner, this is not quite what we need.
+<p>As we see this produces prefixes of our input in consecutive manner, this is not quite what we need.
 However this function we created <code>]\</code> can take an extra argument on the left. This argument defines length of the window in output.</p>
 <pre><code class="language-j">   4 ]\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
 bvwb
@@ -226,12 +229,12 @@ Match would return us a single value, <code>1</code> in case of match and <code>
 <pre><code>   'bvwb' -: 'bvw'
 0
 </code></pre>
-<p>Let's define our function that will check uniquness as <code>is_unique</code></p>
+<p>Let's define our function that will check uniqueness as <code>is_unique</code></p>
 <pre><code>   is_unique =: {{ y -: ~. y }}
 </code></pre>
 <p>Now that might look uncomfortable at first, there is a but of unpacking that can be done here.</p>
-<p><code>y</code> is referring to functions right argument so we can mentally substitute it wiht original string <code>bvwb</code>.
-If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is doneall is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
+<p><code>y</code> is referring to functions right argument so we can mentally substitute it with original string <code>bvwb</code>.
+If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
 <p>If we try calling our new function on few inputs we can see that it is working as expected.</p>
 <pre><code class="language-j">   is_unique 'bvwb'
 0
@@ -239,11 +242,11 @@ If we recall previous chapter we know that J is evaluating right to left so insi
 1
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h1>
-<p>We have defined a function that tests if string consists of unique set of characters and we also covered how to scan our input in fixed size windows. Previously we used identity <code>]</code> to compose our scan operator <code>]\</code>, but we can actually just substitue our identity for <code>is_unique</code> to array of flag markers as an output.</p>
+<p>We have defined a function that tests if string consists of unique set of characters and we also covered how to scan our input in fixed size windows. Previously we used identity <code>]</code> to compose our scan operator <code>]\</code>, but we can actually just substitute our identity for <code>is_unique</code> to array of flag markers as an output.</p>
 <pre><code>   4 is_unique\ 'bvwbjplbgvbhsrlpgdmjqwftvncz'
 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 </code></pre>
-<p>This returns us array of flags, and all that is left is to find a first occurence of <code>1</code> in this array. To do this we can use index of <code>i.</code>, which returns first occurence of an element in array.
+<p>This returns us array of flags, and all that is left is to find a first occurrence of <code>1</code> in this array. To do this we can use index of <code>i.</code>, which returns first occurrence of an element in array.
 <code>i.</code> is a counter-intuitive, since it takes array to search in on the left and elements to look for on the right so we need an extra pair of braces to make sure ordering (remember J evaluates right-to-left)</p>
 <pre><code class="language-j">   (4 is_unique\ 'bvwbjplbgvbhsrlpgdmjqwftvncz') i. 1
 1

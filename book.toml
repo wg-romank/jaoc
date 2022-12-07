@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Advent of Code in J"
+
+
+[output.html]
+git-repository-url = "https://github.com/wg-romank/jaoc"
