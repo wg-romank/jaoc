@@ -148,30 +148,30 @@
                         <h1 id="unique-characters"><a class="header" href="#unique-characters">Unique characters</a></h1>
 <p>Now we need to somehow check if characters are unique in the window, to do so we can use nub <code>~.</code>.
 This primitive takes input and produces set of its unique members.</p>
-<pre><code class="language-j">   ~. 'bvwb'
+<pre><code class="language-r">   ~. 'bvwb'
 bvw
 </code></pre>
 <p>So if we call it on a string that is in the first window, then we can see that its output has last <code>b</code> removed.
 This is handy but this would not quite cut it for us just yet, we need to compare output of nub <code>~.</code> with its original argument.</p>
 <p>J has a regular comparison operator <code>=</code> but this operator will compare strings symbol by symbol and will return another array as an output, so we can't quite use it here.
 Trying to compare strings of unmatching length will produce a length error.</p>
-<pre><code class="language-j">   'bvwb' = 'bvw'
+<pre><code class="language-r">   'bvwb' = 'bvw'
 |length error
 |   'bvwb'    ='bvw'
 </code></pre>
 <p>Fortunately there is another comparison operator that is called match <code>-:</code> and it is used mainly for 'tolerant' comparison as described in docs.
 Match would return us a single value, <code>1</code> in case of match and <code>0</code> otherwise and this is exactly the type of flag that we need.</p>
-<pre><code>   'bvwb' -: 'bvw'
+<pre><code class="language-r">   'bvwb' -: 'bvw'
 0
 </code></pre>
 <p>Let's define our function that will check uniqueness as <code>is_unique</code></p>
-<pre><code>   is_unique =: {{ y -: ~. y }}
+<pre><code class="language-r">   is_unique =: {{ y -: ~. y }}
 </code></pre>
 <p>Now that might look uncomfortable at first, there is a but of unpacking that can be done here.</p>
 <p><code>y</code> is referring to functions right argument so we can mentally substitute it with original string <code>bvwb</code>.
 If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
 <p>If we try calling our new function on few inputs we can see that it is working as expected.</p>
-<pre><code class="language-j">   is_unique 'bvwb'
+<pre><code class="language-r">   is_unique 'bvwb'
 0
    is_unique 'abcd'
 1
