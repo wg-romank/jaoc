@@ -35,9 +35,8 @@ Let's define our function that will check uniqueness as `is_unique`
    is_unique =: {{ y -: ~. y }}
 ```
 
-Now that might look uncomfortable at first, there is a but of unpacking that can be done here.
+Now that might look uncomfortable at first, let's walk it step-by-step. `y` is referring to functions right argument so we can mentally substitute it with original string `bvwb`. We use `y` few times in this function similar how you can reference variable multiple times in any other programming language.
 
-`y` is referring to functions right argument so we can mentally substitute it with original string `bvwb`.
 If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is `~. y`, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match `-:` that would return us `1` or `0`.
 
 If we try calling our new function on few inputs we can see that it is working as expected.

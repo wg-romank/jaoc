@@ -167,9 +167,8 @@ Match would return us a single value, <code>1</code> in case of match and <code>
 <p>Let's define our function that will check uniqueness as <code>is_unique</code></p>
 <pre><code class="language-r">   is_unique =: {{ y -: ~. y }}
 </code></pre>
-<p>Now that might look uncomfortable at first, there is a but of unpacking that can be done here.</p>
-<p><code>y</code> is referring to functions right argument so we can mentally substitute it with original string <code>bvwb</code>.
-If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
+<p>Now that might look uncomfortable at first, let's walk it step-by-step. <code>y</code> is referring to functions right argument so we can mentally substitute it with original string <code>bvwb</code>. We use <code>y</code> few times in this function similar how you can reference variable multiple times in any other programming language.</p>
+<p>If we recall previous chapter we know that J is evaluating right to left so inside of our function 'body' first thing that gets evaluated is <code>~. y</code>, meaning finding unique subset of our string. Once that is done all is left 'tolerant' comparison with match <code>-:</code> that would return us <code>1</code> or <code>0</code>.</p>
 <p>If we try calling our new function on few inputs we can see that it is working as expected.</p>
 <pre><code class="language-r">   is_unique 'bvwb'
 0
