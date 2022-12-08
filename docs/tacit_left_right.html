@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html" class="active"><strong aria-hidden="true">4.2.</strong> Left & right identity</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_why_bother.html"><strong aria-hidden="true">4.2.</strong> Why bother?</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html" class="active"><strong aria-hidden="true">4.3.</strong> Left & right identity</a></li><li class="chapter-item expanded "><a href="tacit_day6.html"><strong aria-hidden="true">4.4.</strong> Rewriting Day 6</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,15 +146,39 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="left--right-identity"><a class="header" href="#left--right-identity">Left &amp; right identity</a></h1>
+<p>We touched briefly that there are two identity functions in J. Left <code>[</code> and right <code>]</code> identity. And they performed identically for us when solving day 6 problem using sliding windows.</p>
+<p>The difference comes when this function is invoked with both arguments, in this case left <code>[</code> identity will return its left argument and right <code>]</code> - right one respectively.</p>
+<pre><code class="language-r">   3 [ 5
+3
+   3 ] 5
+5
+</code></pre>
+<p>As with many things in J, this comes in handy when composing multiple functions. Let's consider a plus <code>+</code> primitive and write in a fork expression like following.</p>
+<pre><code class="language-r">   plus =: [ + ]
+</code></pre>
+<p>Now this looks like an arbitrary set of symbols to anyone unfamiliar with J's special execution order for <em>fork</em>. This <em>fork</em> has its both arguments so it will evaluate slightly differently from the one we described previously.</p>
+<p>Rules for this one would look like following.</p>
+<pre><code class="language-r">   x (f h g) y
+</code></pre>
+<p>Will be evaluated to:</p>
+<pre><code class="language-r">   (x f y) h (x g y)
+</code></pre>
+<p>In this case branches of the fork with get both <code>x</code> and <code>y</code>, then <code>h</code> will be applied to their results. When we apply <em>fork</em> evaluation rules for our <code>plus</code> example we would get behavior similar to following direct definition.</p>
+<pre><code class="language-r">   plus_direct =: {{ (x [ y) + (x [ y) }}
+</code></pre>
+<p>Summing that with specifics of identity functions when calling with multiple argument we can see that this complex notation is actually equivalent so a single <code>+</code> primitive, since identity in first set of braces will evaluate to <code>x</code>, and identity in second - to <code>y</code>, leaving us with the same <code>plus</code> definition that we wrote a few chapters back.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="tacit_fork.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="tacit_why_bother.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="tacit_day6.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -162,10 +186,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="tacit_fork.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="tacit_why_bother.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="tacit_day6.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

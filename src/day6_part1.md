@@ -26,7 +26,7 @@ Fortunately as J evaluates right-to-left we can just add `4 +` to our function b
 As we can see, we have some duplication here, we can actually extract `4` as another function argument (it would be left argument with reserved name `x`).
 
 ```r
-   solve =: {{ x + (x is_unique\ y i.1 }}
+   solve =: {{ x + (x is_unique\ y) i.1 }}
 ```
 
 Here is a complete solution.
@@ -34,7 +34,7 @@ Here is a complete solution.
 ```r
    input =: fread '2022/input6'
    is_unique =: {{ y -: ~. y }}
-   solve =: {{ x + (x is_unique\ y i.1 }}
+   solve =: {{ x + (x is_unique\ y) i.1 }}
    part1 =: 4 solve input
    part2 =: 14 solve input
 ```

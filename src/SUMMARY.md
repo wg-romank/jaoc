@@ -9,4 +9,6 @@
   - [Putting it all together](./day6_part1.md)
 - [Tacit Programming](./tacit.md)
   - [Fork](./tacit_fork.md)
+  - [Why bother?](./tacit_why_bother.md)
   - [Left & right identity](./tacit_left_right.md)
+  - [Rewriting Day 6](./tacit_day6.md)

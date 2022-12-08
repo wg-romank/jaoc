@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html"><strong aria-hidden="true">4.2.</strong> Left & right identity</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="day6.html"><strong aria-hidden="true">3.</strong> Day 6: Tuning Trouble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day6_intro.html"><strong aria-hidden="true">3.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="day6_scan.html"><strong aria-hidden="true">3.2.</strong> Scan & Sliding Windows</a></li><li class="chapter-item expanded "><a href="day6_unique.html"><strong aria-hidden="true">3.3.</strong> Unique characters</a></li><li class="chapter-item expanded "><a href="day6_part1.html"><strong aria-hidden="true">3.4.</strong> Putting it all together</a></li></ol></li><li class="chapter-item expanded "><a href="tacit.html"><strong aria-hidden="true">4.</strong> Tacit Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tacit_fork.html"><strong aria-hidden="true">4.1.</strong> Fork</a></li><li class="chapter-item expanded "><a href="tacit_why_bother.html"><strong aria-hidden="true">4.2.</strong> Why bother?</a></li><li class="chapter-item expanded "><a href="tacit_left_right.html"><strong aria-hidden="true">4.3.</strong> Left & right identity</a></li><li class="chapter-item expanded "><a href="tacit_day6.html"><strong aria-hidden="true">4.4.</strong> Rewriting Day 6</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -255,12 +255,12 @@ Match would return us a single value, <code>1</code> in case of match and <code>
 <pre><code class="language-r">   solve_part1 =: {{ 4 + (4 is_unique\ y) i. 1 }}
 </code></pre>
 <p>As we can see, we have some duplication here, we can actually extract <code>4</code> as another function argument (it would be left argument with reserved name <code>x</code>).</p>
-<pre><code class="language-r">   solve =: {{ x + (x is_unique\ y i.1 }}
+<pre><code class="language-r">   solve =: {{ x + (x is_unique\ y) i.1 }}
 </code></pre>
 <p>Here is a complete solution.</p>
 <pre><code class="language-r">   input =: fread '2022/input6'
    is_unique =: {{ y -: ~. y }}
-   solve =: {{ x + (x is_unique\ y i.1 }}
+   solve =: {{ x + (x is_unique\ y) i.1 }}
    part1 =: 4 solve input
    part2 =: 14 solve input
 </code></pre>
@@ -309,7 +309,62 @@ Match would return us a single value, <code>1</code> in case of match and <code>
 6
 </code></pre>
 <p>When it is assigned to a name, outer braces are not necessary anymore.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="why-bother"><a class="header" href="#why-bother">Why bother?</a></h1>
+<p>We have seen how with clever interpretation we can define our mean as a set of seemingly random symbols <code>+/ % #</code>. And a natural question arises, why should you ever do this?</p>
+<p>What is wrong with the following direct definition?</p>
+<pre><code class="language-r">   mean =: {{ (+/ y) % (# y) }}
+</code></pre>
+<p>There is no definitive answer, some people writing J enjoy tacit style because of brevity, there is an argument that it improves performance of the interpreter, because tacit definitions are parsed first then executed. Number of performance optimizations for tacit forms are listed on J's wiki.</p>
+<p>Surprisingly but for me personally tacit forms make it easier to work with code, move things around, reorganize, refactor. I guess it enables it due to the fact that tacit definitions needs to be read in specific order like formulas and have certain rules can be applied when manipulating them almost mechanically like algebraic constructs.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="left--right-identity"><a class="header" href="#left--right-identity">Left &amp; right identity</a></h1>
+<p>We touched briefly that there are two identity functions in J. Left <code>[</code> and right <code>]</code> identity. And they performed identically for us when solving day 6 problem using sliding windows.</p>
+<p>The difference comes when this function is invoked with both arguments, in this case left <code>[</code> identity will return its left argument and right <code>]</code> - right one respectively.</p>
+<pre><code class="language-r">   3 [ 5
+3
+   3 ] 5
+5
+</code></pre>
+<p>As with many things in J, this comes in handy when composing multiple functions. Let's consider a plus <code>+</code> primitive and write in a fork expression like following.</p>
+<pre><code class="language-r">   plus =: [ + ]
+</code></pre>
+<p>Now this looks like an arbitrary set of symbols to anyone unfamiliar with J's special execution order for <em>fork</em>. This <em>fork</em> has its both arguments so it will evaluate slightly differently from the one we described previously.</p>
+<p>Rules for this one would look like following.</p>
+<pre><code class="language-r">   x (f h g) y
+</code></pre>
+<p>Will be evaluated to:</p>
+<pre><code class="language-r">   (x f y) h (x g y)
+</code></pre>
+<p>In this case branches of the fork with get both <code>x</code> and <code>y</code>, then <code>h</code> will be applied to their results. When we apply <em>fork</em> evaluation rules for our <code>plus</code> example we would get behavior similar to following direct definition.</p>
+<pre><code class="language-r">   plus_direct =: {{ (x [ y) + (x [ y) }}
+</code></pre>
+<p>Summing that with specifics of identity functions when calling with multiple argument we can see that this complex notation is actually equivalent so a single <code>+</code> primitive, since identity in first set of braces will evaluate to <code>x</code>, and identity in second - to <code>y</code>, leaving us with the same <code>plus</code> definition that we wrote a few chapters back.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rewriting-day-6"><a class="header" href="#rewriting-day-6">Rewriting Day 6</a></h1>
+<p>Our final solution for day6 problem was something along the lines.</p>
+<pre><code class="language-r">   input =: fread '2022/input6'
+   is_unique =: {{ y -: ~. y }}
+   solve =: {{ x + (x is_unique\ y) i.1 }}
+   part1 =: 4 solve input
+   part2 =: 14 solve input
+</code></pre>
+<p>Let's try to apply what we learned about <em>fork</em> combinator and left and right identity functions in order to create a tacit of out of this as an exercises.</p>
+<p>We start with <code>is_unique</code> function, we see that it takes a nub <code>~.</code> of it's right argument then matches <code>-:</code> it with it's right argument again determining if the string passed on the right is matching unique set of its characters.</p>
+<p>Using one of the identity functions (does not matter which one again), we can rewrite it as follows.</p>
+<pre><code class="language-r">   is_unique =: {{ (] y) -: (~. y) }}
+</code></pre>
+<p>But is exactly how <em>fork</em> would evaluate for <code>] -: ~.</code>! Again it works with <code>[</code> too. If we update solution with this new <code>is_unique</code> and re-run it we should see matching results.</p>
+<p>We could try calling our tacit form on some input and should see that it performs the same as its direct definition peer.</p>
+<pre><code class="language-r">   (] -: ~.) 'abcd'
+1
+</code></pre>
+<p>Let's have a look at <code>solve</code>. This is a bit more complex, since we have arguments inside braces. We would need need to introduce another primitive here in order to continue to manipulate our formula.</p>
+<p><code>~</code> - reflex, is another function that takes a function, it swaps places of arguments, meaning a function would take it's left <code>x</code> argument on the right as <code>y</code> and same for right <code>y</code>, which will be passed on the left as <code>x</code>.</p>
+<p>Reflex does not do anything for functions like <code>+</code>, but we plan to use it for <code>i.</code> which finds the index of first occurrence in the array. Using reflex, our last part of <code>solve</code> function could look like:</p>
+<pre><code class="language-r">   {{ 1 i.~ (x is_unique\ y) }}
+</code></pre>
+<p>We now start to see something that resembles a <em>fork</em>, but it has a value in place of it's left branch. Turns out that is fine, in case we have a value / constant on the left branch J will still interpret it as a <em>fork</em> since it has some special evaluation rules for that. This wouldn't work however if we would not swap the order on <code>i.</code>, that's why we needed to introduce a reflex <code>~</code>. Again reflex <code>~</code> is a combinator, a function that expects a function and produces another function, similar to scan <code>\</code> we already use in this solution.</p>
+<p>So if we try to write it in tacit form, we would get a perfectly legal expression in J.</p>
+<pre><code class="language-r">   first_flag =: 1 i.~ is_unique\
+</code></pre>
 
                     </main>
 
