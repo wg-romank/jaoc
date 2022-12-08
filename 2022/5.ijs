@@ -1,33 +1,33 @@
 in =: cutopen fread '2022/input5'
-vv =: _4 ({.@:}.)\ ]
 nl =: 8 NB. need to adjust
-cr =: |: <"0 vv @> nl {. in
 
-pr =: {{ ". > 1 3 5 { ;: y }}
-iq =: 0 1 1 -"1~ pr @> (>: nl) }. in
+parse_c =: _4 ({.@:}.)\ ]
+crates =: |: <"0 parse_c @> nl {. in
+
+parse_i =: {{ ". > 1 3 5 { ;: y }}
+instructions =: 0 1 1 -"1~ parse_i @> (>: nl) }. in
 
 find_shift =: [: +/"1 (<' ') -:"0 ]
 shift =: find_shift }."(0 1) ]
 
-process =: adverb define
+crane =: adverb define
   NB. probably can be done with antibase cheaper
-  len =: # x
   'hm fr to' =: y
-  mask =: hm * fr = i.len
+  mask =: hm * fr = i. # x
   move =: u hm {. fr { x
   prefix =: to {. ]
   updated =: move , to { ]
-  suffix =: (to + 1) }. ]
+  suffix =: (>:to) }. ]
 
   left =: mask |.!.b"(0 1) x
   (prefix , updated , suffix) left
 )
 
-headl =: [: {. [
-taill =: [: }. [
-non_emptyl =: 0 < [: # [
-run =: {{ taill $:^:non_emptyl (] (u)process headl) }}
-cp =: {{ > {. |: iq (u)run shift cr }}
+nexti =: [: {. [
+resti =: [: }. [
+non_empty =: 0 < [: # [
+run =: {{ resti $:^:non_emptyl (] (u)crane nexti) }}
+cp =: {{ > {. |: instructions (u)run shift crates }}
 
 part1 =: |.cp
 part2 =: [cp
