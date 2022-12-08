@@ -1,6 +1,6 @@
-in =: cutopen fread '2022/example5'
+in =: cutopen fread '2022/input5'
 vv =: _4 ({.@:}.)\ ]
-nl =: 3
+nl =: 8
 cr =: |: <"0 vv @> nl {. in
 
 b =: <' '
@@ -24,7 +24,7 @@ process =: dyad define
   len =: # x
   'hm fr to' =: y
   mask =: hm * fr = i.len
-  move =: |. hm {. fr { x
+  move =: hm {. fr { x NB. |. for part 1
   prefix =: to {. ]
   updated =: move , to { ]
   suffix =: (to + 1) }. ]
