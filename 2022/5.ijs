@@ -1,6 +1,7 @@
 in =: cutopen fread '2022/example5'
 vv =: _4 ({.@:}.)\ ]
-cr =: |: <"0 vv @> 3 {. in
+nl =: 3
+cr =: |: <"0 vv @> nl {. in
 
 b =: <' '
 find_shift =: [: +/"1 b -:"0 ]
@@ -18,7 +19,7 @@ process =: dyad define
   len =: # x
   'hm fr to' =: y
   mask =: hm * fr = i.len
-  move =: hm {. fr { x
+  move =: |. hm {. fr { x
   prefix =: to {. ]
   updated =: move , to { ]
   suffix =: (to + 1) }. ]
@@ -27,5 +28,16 @@ process =: dyad define
   (prefix , updated , suffix) left
 )
 
+NB. (field) process (iq)
+
+NB. y -> field
+NB. x -> instructions
+headl =: [: {. [
+taill =: [: }. [
+non_emptyl =: 0 < [: # [
+run =: taill $:^:non_emptyl (] process headl)
+
 pr =: {{ ". > 1 3 5 { ;: y }}
-iq =: 0 1 1 -"1~ pr @> 4 }. in
+iq =: 1 {. 0 1 1 -"1~ pr @> (>: nl) }. in
+
+part1 =: > {. |: iq run shift cr
