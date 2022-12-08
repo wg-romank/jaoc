@@ -6,13 +6,18 @@ cr =: |: <"0 vv @> nl {. in
 b =: <' '
 find_shift =: [: +/"1 b -:"0 ]
 
-shift =: find_shift |."(0 1) ]
+shift =: find_shift }."(0 1) ]
 
 next =: 0 { iq
 NB. hm =: {.
 NB. fr =: {.@:}.
 NB. to =: }.@:}.
 NB. mask =: (hm * i.len = fr) next
+
+trim =: {{
+  to_trim =: +/ *./ (<'') -:"0 y
+  to_trim & }."1 &. |."1 y
+}}
 
 process =: dyad define 
   NB. probably can be done with antibase cheaper
@@ -25,7 +30,7 @@ process =: dyad define
   suffix =: (to + 1) }. ]
 
   left =: mask |.!.b"(0 1) x
-  (prefix , updated , suffix) left
+  trim@:(prefix , updated , suffix) left
 )
 
 NB. (field) process (iq)
@@ -38,6 +43,6 @@ non_emptyl =: 0 < [: # [
 run =: taill $:^:non_emptyl (] process headl)
 
 pr =: {{ ". > 1 3 5 { ;: y }}
-iq =: 1 {. 0 1 1 -"1~ pr @> (>: nl) }. in
+iq =: 0 1 1 -"1~ pr @> (>: nl) }. in
 
 part1 =: > {. |: iq run shift cr
