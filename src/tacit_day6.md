@@ -46,3 +46,11 @@ So if we try to write it in tacit form, we would get a perfectly legal expressio
 ```r
    first_flag =: 1 i.~ is_unique\
 ```
+
+Now we can simply use it in another tacit definition that would complete our solution for day6.
+
+```r
+   solve =: [ + first_flag
+```
+
+We use another fork here, with left identity `[` on the left. This is important and unlike in previous case we cannot simply swap it over for right identity `]`, since `solve` would take the window length on the left and the input string on the right. Writing it with right identity `]`, will tell J to add location of our first flag with the original string which does not make a lot of sense.

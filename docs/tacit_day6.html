@@ -172,6 +172,10 @@
 <p>So if we try to write it in tacit form, we would get a perfectly legal expression in J.</p>
 <pre><code class="language-r">   first_flag =: 1 i.~ is_unique\
 </code></pre>
+<p>Now we can simply use it in another tacit definition that would complete our solution for day6.</p>
+<pre><code class="language-r">   solve =: [ + first_flag
+</code></pre>
+<p>We use another fork here, with left identity <code>[</code> on the left. This is important and unlike in previous case we cannot simply swap it over for right identity <code>]</code>, since <code>solve</code> would take the window length on the left and the input string on the right. Writing it with right identity <code>]</code>, will tell J to add location of our first flag with the original string which does not make a lot of sense.</p>
 
                     </main>
 
