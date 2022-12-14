@@ -1,3 +1,6 @@
-in =: ;:@> cutopen fread '2022/example10'
-cy =: 1 2 {~ > 'addx' -:L:0 {."1 in
-re =: }."1 in
+in =: (' '&cut)@> cutopen fread '2022/input10'
+re =: +/\ 1, +/"1^:2 (0&".)@> }."1 in
+cy =: +/\ 0, (1 2 {~ > 'addx' -:L:0 {."1 in)
+id =: (1 i:~ >:)"(0 _)
+qu =: 20 60 100 140 180 220
+p1 =: [: +/ qu * (qu id [) { ]
